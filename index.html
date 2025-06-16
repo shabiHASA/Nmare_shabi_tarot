@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>블루시티 - Blue City</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* 엔터 페이지 */
+        .enter-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(45deg, #0f0f23 0%, #1a1a3a 50%, #2d2d5f 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 1000;
+            transition: opacity 0.8s ease;
+        }
+
+        .god-l-face {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4a4a6a 0%, #6a6a8a 100%);
+            position: relative;
+            margin-bottom: 30px;
+            box-shadow: 0 0 50px rgba(100, 150, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .god-l-face:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 80px rgba(100, 150, 255, 0.5);
+        }
+
+        .eye {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: #2a2a4a;
+            border-radius: 50%;
+            top: 100px;
+            transition: all 0.3s ease;
+        }
+
+        .eye.left {
+            left: 80px;
+        }
+
+        .eye.right {
+            right: 80px;
+        }
+
+        .eye-glow {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, #00bfff 0%, #0080ff 50%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0;
+            animation: none;
+        }
+
+        .eye-flash {
+            animation: flash 0.5s ease-in-out;
+        }
+
+        @keyframes flash {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; box-shadow: 0 0 30px #00bfff; }
+        }
+
+        .mouth {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 30px;
+            border: 3px solid #5a5a7a;
+            border-top: none;
+            border-radius: 0 0 60px 60px;
+        }
+
+        .enter-text {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            opacity: 0.8;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        .enter-page.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* 메인 페이지 */
+        .main-page {
+            opacity: 0;
+            transition: opacity 0.8s ease 0.5s;
+        }
+
+        .main-page.show {
+            opacity: 1;
+        }
+
+        .header {
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(135deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 100%);
+        }
+
+        .header h1 {
+            font-size: 4em;
+            font-weight: bold;
+            text-shadow: 0 0 20px rgba(100, 150, 255, 0.5);
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #00bfff, #0080ff, #4169e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            padding: 15px 30px;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(100, 150, 255, 0.3);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            font-weight: bold;
+        }
+
+        .nav-tab:hover {
+            background: rgba(100, 150, 255, 0.2);
+            border-color: rgba(100, 150, 255, 0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(100, 150, 255, 0.3);
+        }
+
+        .nav-tab.active {
+            background: rgba(100, 150, 255, 0.3);
+            border-color: #00bfff;
+            box-shadow: 0 0 20px rgba(0, 191, 255, 0.4);
+        }
+
+        .content-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .card h2 {
+            color: #00bfff;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+
+        .card h3 {
+            color: #4a9eff;
+            margin-bottom: 10px;
+            margin-top: 20px;
+        }
+
+        .timeline-item {
+            border-left: 3px solid #00bfff;
+            padding-left: 20px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 0;
+            width: 13px;
+            height: 13px;
+            background: #00bfff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
+        }
+
+        .sage-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .sage-card {
+            background: linear-gradient(135deg, rgba(100, 150, 255, 0.1) 0%, rgba(0, 100, 200, 0.1) 100%);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(100, 150, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .sage-card:hover {
+            border-color: #00bfff;
+            box-shadow: 0 5px 20px rgba(0, 191, 255, 0.2);
+        }
+
+        .sage-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #00bfff;
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 60px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            opacity: 0.7;
+        }
+
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5em;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-tab {
+                width: 200px;
+                text-align: center;
+            }
+            
+            .god-l-face {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .eye.left {
+                left: 65px;
+            }
+            
+            .eye.right {
+                right: 65px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 엔터 페이지 -->
+    <div class="enter-page" id="enterPage">
+        <div class="god-l-face">
+            <div class="eye left">
+                <div class="eye-glow"></div>
+            </div>
+            <div class="eye right">
+                <div class="eye-glow"></div>
+            </div>
+            <div class="mouth"></div>
+        </div>
+        <div class="enter-text">화면을 클릭하여 블루시티에 입장하세요</div>
+    </div>
+
+    <!-- 메인 페이지 -->
+    <div class="main-page" id="mainPage">
+        <header class="header">
+            <h1>블루시티</h1>
+            <p>신비로운 푸른 도시의 이야기</p>
+        </header>
+
+        <div class="nav-container">
+            <div class="nav-tabs">
+                <div class="nav-tab active" data-section="chronicle">연대기</div>
+                <div class="nav-tab" data-section="sages">현자들</div>
+                <div class="nav-tab" data-section="world">세계관</div>
+                <div class="nav-tab" data-section="lore">전설과 신화</div>
+                <div class="nav-tab" data-section="locations">주요 장소</div>
+            </div>
+
+            <!-- 연대기 섹션 -->
+            <div class="content-section active" id="chronicle">
+                <div class="card">
+                    <h2>블루시티 연대기</h2>
+                    <div class="timeline-item">
+                        <h3>태초의 시대</h3>
+                        <p>신 「L」이 푸른 빛으로 이 세계를 창조하였다. 그의 눈에서 흘러나온 푸른 눈물이 바다가 되고, 그 위에 떠오른 섬이 블루시티의 기원이 되었다.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3>현자들의 등장</h3>
+                        <p>「L」의 지혜를 받은 첫 번째 현자들이 나타나 블루시티의 기반을 닦았다. 이들은 푸른 마법의 원리를 터득하고 도시를 건설하기 시작했다.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3>대번영의 시대</h3>
+                        <p>블루시티가 최고의 전성기를 맞았다. 현자들의 지혜와 「L」의 축복으로 도시는 하늘에 닿을 듯한 푸른 탑들로 가득 찼다.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3>침묵의 시기</h3>
+                        <p>알 수 없는 이유로 「L」이 침묵에 빠졌고, 블루시티의 빛이 서서히 사라지기 시작했다. 현자들은 이 위기를 극복하기 위해 노력하고 있다.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3>현재</h3>
+                        <p>새로운 희망의 빛이 나타나기 시작했다. 젊은 현자들이 「L」의 진정한 의도를 깨달아가며 블루시티의 부활을 꿈꾸고 있다.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 현자들 섹션 -->
+            <div class="content-section" id="sages">
+                <div class="card">
+                    <h2>블루시티의 현자들</h2>
+                    <p>「L」의 지혜를 받아 블루시티를 이끌어가는 위대한 현자들을 소개합니다.</p>
+                    
+                    <div class="sage-grid">
+                        <div class="sage-card">
+                            <div class="sage-name">아쿠아리우스</div>
+                            <p><strong>별명:</strong> 물의 현자</p>
+                            <p><strong>전문 분야:</strong> 수계 마법, 치유술</p>
+                            <p>블루시티의 모든 물을 관리하며, 그의 손길이 닿은 물은 어떤 상처도 치유한다고 전해진다.</p>
+                        </div>
+                        
+                        <div class="sage-card">
+                            <div class="sage-name">세렌디피아</div>
+                            <p><strong>별명:</strong> 운명의 현자</p>
+                            <p><strong>전문 분야:</strong> 예언술, 시간 마법</p>
+                            <p>미래를 내다보는 능력을 가진 현자로, 블루시티의 중요한 결정은 모두 그녀의 조언을 거친다.</p>
+                        </div>
+                        
+                        <div class="sage-card">
+                            <div class="sage-name">루미나스</div>
+                            <p><strong>별명:</strong> 빛의 현자</p>
+                            <p><strong>전문 분야:</strong> 광명 마법, 결계술</p>
+                            <p>블루시티를 보호하는 거대한 푸른 결계를 유지하며, 어둠의 침입을 막아내는 수호자이다.</p>
+                        </div>
+                        
+                        <div class="sage-card">
+                            <div class="sage-name">크리스탈리아</div>
+                            <p><strong>별명:</strong> 지식의 현자</p>
+                            <p><strong>전문 분야:</strong> 연금술, 고대 문헌 연구</p>
+                            <p>블루시티의 모든 지식을 보관하는 대도서관의 관리자이며, 잃어버린 마법들을 복원하는 일에 헌신하고 있다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 세계관 섹션 -->
+            <div class="content-section" id="world">
+                <div class="card">
+                    <h2>블루시티 세계관</h2>
+                    
+                    <h3>신 「L」</h3>
+                    <p>블루시티의 창조주이자 수호신. 그의 푸른 눈은 모든 것을 꿰뚫어 보며, 그의 의지에 따라 세상의 모든 푸른 것들이 존재한다. 최근 침묵에 빠져 있어 현자들이 그의 진의를 파악하려 노력하고 있다.</p>
+                    
+                    <h3>푸른 마법</h3>
+                    <p>블루시티에서만 사용할 수 있는 특별한 마법. 물, 빛, 지혜, 치유 등 다양한 형태로 나타나며, 사용자의 마음이 순수할수록 더 강력한 힘을 발휘한다.</p>
+                    
+                    <h3>크리스털 코어</h3>
+                    <p>블루시티 중앙에 위치한 거대한 푸른 수정. 「L」의 힘이 집약된 곳으로, 도시의 모든 에너지원이 된다. 현재는 빛이 약해져 현자들이 교대로 힘을 주입하고 있다.</p>
+                    
+                    <h3>시민들</h3>
+                    <p>블루시티의 시민들은 모두 푸른 기운을 품고 있다. 각자 작은 마법 능력을 가지고 있으며, 현자들을 존경하고 「L」을 신봉한다.</p>
+                </div>
+            </div>
+
+            <!-- 전설과 신화 섹션 -->
+            <div class="content-section" id="lore">
+                <div class="card">
+                    <h2>전설과 신화</h2>
+                    
+                    <h3>푸른 눈물의 전설</h3>
+                    <p>「L」이 세상의 아픔을 보며 흘린 눈물이 바다가 되었다는 전설. 그 눈물 한 방울 한 방울에는 무한한 사랑과 치유의 힘이 담겨 있다고 한다.</p>
+                    
+                    <h3>침묵의 예언</h3>
+                    <p>"신이 침묵할 때, 진정한 지혜가 꽃피우리라." 현자 세렌디피아가 남긴 예언으로, 현재의 위기가 실은 더 큰 발전을 위한 과정이라는 희망적 해석이 있다.</p>
+                    
+                    <h3>일곱 번째 현자의 전설</h3>
+                    <p>언젠가 일곱 번째 현자가 나타나 「L」의 침묵을 해결하고 블루시티를 새로운 차원으로 이끌 것이라는 전설. 많은 이들이 그 현자의 출현을 기다리고 있다.</p>
+                    
+                    <h3>영원한 푸름의 약속</h3>
+                    <p>「L」이 블루시티와 그 주민들에게 한 약속. "너희들의 마음이 푸른 한, 이 도시는 영원히 빛날 것이다."</p>
+                </div>
+            </div>
+
+            <!-- 주요 장소 섹션 -->
+            <div class="content-section" id="locations">
+                <div class="card">
+                    <h2>주요 장소</h2>
+                    
+                    <h3>크리스털 타워</h3>
+                    <p>블루시티 중앙에 위치한 거대한 푸른 탑. 크리스털 코어가 있는 곳이며, 현자들의 회의장소이기도 하다. 탑 꼭대기에서는 도시 전체가 한눈에 보인다.</p>
+                    
+                    <h3>지혜의 대도서관</h3>
+                    <p>현자 크리스탈리아가 관리하는 거대한 도서관. 블루시티의 모든 지식과 역사가 보관되어 있으며, 고대 마법서들도 이곳에서 찾을 수 있다.</p>
+                    
+                    <h3>치유의 온천</h3>
+                    <p>현자 아쿠아리우스가 관리하는 신성한 온천. 「L」의 축복을 받은 물로 어떤 상처와 병도 치유한다고 전해진다.</p>
+                    
+                    <h3>예언의 신전</h3>
+                    <p>현자 세렌디피아가 미래를 내다보는 곳. 신전 내부는 시간이 다르게 흐르며, 과거와 미래의 모습을 볼 수 있다.</p>
+                    
+                    <h3>빛의 정원</h3>
+                    <p>현자 루미나스가 가꾸는 아름다운 정원. 밤이 되면 푸른 빛을 내는 신비로운 꽃들이 피어나 도시를 환하게 밝힌다.</p>
+                    
+                    <h3>시민 광장</h3>
+                    <p>블루시티 주민들이 모이는 중심가. 축제와 중요한 발표가 이곳에서 이루어지며, 「L」의 작은 성소도 광장 한편에 자리하고 있다.</p>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>© 2025 블루시티. 신 「L」의 축복이 함께하길.</p>
+        </footer>
+    </div>
+
+    <script>
+        // 엔터 페이지 처리
+        const enterPage = document.getElementById('enterPage');
+        const mainPage = document.getElementById('mainPage');
+        const eyeGlows = document.querySelectorAll('.eye-glow');
+
+        enterPage.addEventListener('click', function() {
+            // 눈 번쩍임 효과
+            eyeGlows.forEach(glow => {
+                glow.classList.add('eye-flash');
+            });
+
+            // 0.5초 후 페이지 전환
+            setTimeout(() => {
+                enterPage.classList.add('fade-out');
+                mainPage.classList.add('show');
+            }, 500);
+        });
+
+        // 탭 전환 기능
+        const navTabs = document.querySelectorAll('.nav-tab');
+        const contentSections = document.querySelectorAll('.content-section');
+
+        navTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // 모든 탭과 섹션 비활성화
+                navTabs.forEach(t => t.classList.remove('active'));
+                contentSections.forEach(s => s.classList.remove('active'));
+
+                // 클릭된 탭 활성화
+                this.classList.add('active');
+                
+                // 해당 섹션 활성화
+                const sectionId = this.getAttribute('data-section');
+                document.getElementById(sectionId).classList.add('active');
+            });
+        });
+
+        // 카드 호버 효과
+        const cards = document.querySelectorAll('.card, .sage-card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // 스크롤 애니메이션
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        // 모든 카드에 관찰자 추가
+        setTimeout(() => {
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+        }, 1000);
+    </script>
+</body>
+</html>
