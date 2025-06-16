@@ -12,10 +12,45 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #00ffff;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 글리치 배경 */
+        .glitch-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #0a0a0a 0%, #1a0a1a 25%, #0a1a1a 50%, #1a1a0a 75%, #0a0a0a 100%);
+            z-index: -1;
+        }
+
+        .glitch-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 255, 255, 0.03) 2px,
+                    rgba(0, 255, 255, 0.03) 4px
+                );
+            animation: scanlines 2s linear infinite;
+        }
+
+        @keyframes scanlines {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(50px); }
         }
 
         /* 엔터 페이지 */
@@ -25,7 +60,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: linear-gradient(45deg, #0f0f23 0%, #1a1a3a 50%, #2d2d5f 100%);
+            background: radial-gradient(circle at center, #000428 0%, #004e92 50%, #000428 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -36,56 +71,194 @@
         }
 
         .god-l-face {
-            width: 300px;
-            height: 300px;
+            width: 350px;
+            height: 350px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #4a4a6a 0%, #6a6a8a 100%);
+            background: 
+                radial-gradient(circle at 30% 30%, #333366 0%, #1a1a3a 50%, #000011 100%);
             position: relative;
             margin-bottom: 30px;
-            box-shadow: 0 0 50px rgba(100, 150, 255, 0.3);
+            box-shadow: 
+                0 0 50px rgba(0, 255, 255, 0.4),
+                inset 0 0 50px rgba(0, 100, 255, 0.2);
             transition: all 0.3s ease;
+            border: 2px solid rgba(0, 255, 255, 0.3);
         }
 
         .god-l-face:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 80px rgba(100, 150, 255, 0.5);
+            box-shadow: 
+                0 0 100px rgba(0, 255, 255, 0.6),
+                inset 0 0 50px rgba(0, 100, 255, 0.4);
         }
 
         .eye {
             position: absolute;
-            width: 40px;
-            height: 40px;
-            background: #2a2a4a;
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle, #001122 0%, #003366 100%);
             border-radius: 50%;
-            top: 100px;
+            top: 120px;
             transition: all 0.3s ease;
+            border: 2px solid #004477;
         }
 
         .eye.left {
-            left: 80px;
+            left: 90px;
         }
 
         .eye.right {
-            right: 80px;
+            right: 90px;
         }
 
         .eye-glow {
             position: absolute;
-            width: 40px;
-            height: 40px;
-            background: radial-gradient(circle, #00bfff 0%, #0080ff 50%, transparent 70%);
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle, #00ffff 0%, #0080ff 30%, #004499 60%, transparent 100%);
             border-radius: 50%;
             opacity: 0;
-            animation: none;
+            transition: all 0.3s ease;
         }
 
-        .eye-flash {
-            animation: flash 0.5s ease-in-out;
+        /* 빔 효과 */
+        .eye-beam {
+            position: absolute;
+            width: 4px;
+            height: 0;
+            background: linear-gradient(to bottom, #00ffff, #0080ff, transparent);
+            left: 50%;
+            top: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            box-shadow: 0 0 20px #00ffff;
         }
 
-        @keyframes flash {
+        .beam-activate {
+            animation: beamShoot 1.5s ease-out forwards;
+        }
+
+        @keyframes beamShoot {
+            0% { 
+                height: 0; 
+                opacity: 0; 
+            }
+            20% { 
+                height: 300px; 
+                opacity: 1; 
+            }
+            40% { 
+                height: 600px; 
+                opacity: 1; 
+            }
+            100% { 
+                height: 1000px; 
+                opacity: 0.8; 
+            }
+        }
+
+        /* 화면 깨짐 효과 */
+        .screen-crack {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2000;
+        }
+
+        .crack-line {
+            position: absolute;
+            background: linear-gradient(45deg, transparent, #00ffff, transparent);
+            opacity: 0;
+        }
+
+        .crack-1 {
+            top: 30%;
+            left: 20%;
+            width: 60%;
+            height: 2px;
+            transform: rotate(15deg);
+        }
+
+        .crack-2 {
+            top: 60%;
+            right: 15%;
+            width: 40%;
+            height: 2px;
+            transform: rotate(-25deg);
+        }
+
+        .crack-3 {
+            top: 45%;
+            left: 10%;
+            width: 30%;
+            height: 2px;
+            transform: rotate(60deg);
+        }
+
+        .crack-4 {
+            top: 20%;
+            right: 30%;
+            width: 35%;
+            height: 2px;
+            transform: rotate(-45deg);
+        }
+
+        .screen-glitch {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 255, 255, 0.1) 2px,
+                    rgba(0, 255, 255, 0.1) 4px
+                );
+            pointer-events: none;
+            opacity: 0;
+            z-index: 1500;
+        }
+
+        .activate-cracks .crack-line {
+            animation: crackAppear 0.5s ease-out forwards;
+        }
+
+        .activate-glitch {
+            animation: glitchEffect 0.8s ease-out forwards;
+        }
+
+        @keyframes crackAppear {
+            0% { 
+                opacity: 0; 
+                transform: scale(0) rotate(var(--rotation, 0deg)); 
+            }
+            50% { 
+                opacity: 1; 
+                transform: scale(1.2) rotate(var(--rotation, 0deg)); 
+            }
+            100% { 
+                opacity: 0.8; 
+                transform: scale(1) rotate(var(--rotation, 0deg)); 
+            }
+        }
+
+        @keyframes glitchEffect {
             0%, 100% { opacity: 0; }
-            50% { opacity: 1; box-shadow: 0 0 30px #00bfff; }
+            10% { opacity: 0.8; transform: translateX(2px); }
+            20% { opacity: 0.5; transform: translateX(-2px); }
+            30% { opacity: 0.9; transform: translateX(4px); }
+            40% { opacity: 0.3; transform: translateX(-1px); }
+            50% { opacity: 0.7; transform: translateX(3px); }
+            60% { opacity: 0.4; transform: translateX(-3px); }
+            70% { opacity: 0.8; transform: translateX(1px); }
+            80% { opacity: 0.2; transform: translateX(-4px); }
+            90% { opacity: 0.6; transform: translateX(2px); }
         }
 
         .mouth {
@@ -93,24 +266,34 @@
             bottom: 80px;
             left: 50%;
             transform: translateX(-50%);
-            width: 60px;
-            height: 30px;
-            border: 3px solid #5a5a7a;
+            width: 80px;
+            height: 40px;
+            border: 3px solid #0099cc;
             border-top: none;
-            border-radius: 0 0 60px 60px;
+            border-radius: 0 0 80px 80px;
+            box-shadow: 0 0 10px rgba(0, 153, 204, 0.5);
         }
 
         .enter-text {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bold;
             text-align: center;
             opacity: 0.8;
-            animation: pulse 2s infinite;
+            animation: cyberpulse 2s infinite;
+            text-shadow: 0 0 10px #00ffff;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 0.8; }
-            50% { opacity: 1; }
+        @keyframes cyberpulse {
+            0%, 100% { 
+                opacity: 0.8; 
+                text-shadow: 0 0 10px #00ffff;
+            }
+            50% { 
+                opacity: 1; 
+                text-shadow: 0 0 20px #00ffff, 0 0 30px #0080ff;
+            }
         }
 
         .enter-page.fade-out {
@@ -118,10 +301,12 @@
             pointer-events: none;
         }
 
-        /* 메인 페이지 */
+        /* 메인 페이지 - 사이버펑크 스타일 */
         .main-page {
             opacity: 0;
             transition: opacity 0.8s ease 0.5s;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
         }
 
         .main-page.show {
@@ -131,23 +316,73 @@
         .header {
             text-align: center;
             padding: 50px 20px;
-            background: linear-gradient(135deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 100%);
+            background: 
+                linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(26,26,46,0.6) 100%),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent 0px,
+                    rgba(0, 255, 255, 0.05) 1px,
+                    transparent 2px
+                );
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 3px,
+                    rgba(0, 255, 255, 0.1) 3px,
+                    rgba(0, 255, 255, 0.1) 4px
+                );
+            animation: headerScan 3s linear infinite;
+        }
+
+        @keyframes headerScan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
         }
 
         .header h1 {
             font-size: 4em;
             font-weight: bold;
-            text-shadow: 0 0 20px rgba(100, 150, 255, 0.5);
+            font-family: 'Courier New', monospace;
+            text-shadow: 
+                0 0 20px #00ffff,
+                0 0 40px #0080ff,
+                0 0 60px #004499;
             margin-bottom: 10px;
-            background: linear-gradient(45deg, #00bfff, #0080ff, #4169e1);
+            background: linear-gradient(45deg, #00ffff, #0080ff, #00ffff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+            letter-spacing: 3px;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes titleGlow {
+            0% { filter: brightness(1); }
+            100% { filter: brightness(1.3); }
         }
 
         .header p {
             font-size: 1.2em;
             opacity: 0.9;
+            color: #66ccff;
+            text-shadow: 0 0 10px #0080ff;
+            font-family: 'Courier New', monospace;
+            position: relative;
+            z-index: 1;
         }
 
         .nav-container {
@@ -166,26 +401,57 @@
 
         .nav-tab {
             padding: 15px 30px;
-            background: rgba(255,255,255,0.1);
-            border: 2px solid rgba(100, 150, 255, 0.3);
-            border-radius: 25px;
+            background: 
+                linear-gradient(145deg, rgba(0,0,0,0.8) 0%, rgba(0,50,100,0.3) 100%);
+            border: 2px solid rgba(0, 255, 255, 0.4);
+            border-radius: 0;
             cursor: pointer;
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
             font-weight: bold;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            color: #00ffff;
+            text-shadow: 0 0 5px #0080ff;
+        }
+
+        .nav-tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .nav-tab:hover::before {
+            left: 100%;
         }
 
         .nav-tab:hover {
-            background: rgba(100, 150, 255, 0.2);
-            border-color: rgba(100, 150, 255, 0.6);
+            background: 
+                linear-gradient(145deg, rgba(0,50,100,0.4) 0%, rgba(0,100,200,0.3) 100%);
+            border-color: #00ffff;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(100, 150, 255, 0.3);
+            box-shadow: 
+                0 5px 15px rgba(0, 255, 255, 0.3),
+                0 0 20px rgba(0, 255, 255, 0.2);
+            text-shadow: 0 0 10px #00ffff;
         }
 
         .nav-tab.active {
-            background: rgba(100, 150, 255, 0.3);
-            border-color: #00bfff;
-            box-shadow: 0 0 20px rgba(0, 191, 255, 0.4);
+            background: 
+                linear-gradient(145deg, rgba(0,100,200,0.5) 0%, rgba(0,150,255,0.3) 100%);
+            border-color: #00ffff;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 255, 0.5),
+                inset 0 0 20px rgba(0, 255, 255, 0.1);
+            color: #ffffff;
+            text-shadow: 0 0 10px #00ffff;
         }
 
         .content-section {
@@ -197,52 +463,91 @@
 
         .content-section.active {
             display: block;
-            animation: fadeInUp 0.5s ease;
+            animation: cyberFadeIn 0.5s ease;
         }
 
-        @keyframes fadeInUp {
+        @keyframes cyberFadeIn {
             from {
                 opacity: 0;
                 transform: translateY(30px);
+                filter: blur(5px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0);
+                filter: blur(0);
             }
         }
 
         .card {
-            background: rgba(255,255,255,0.1);
-            border-radius: 15px;
+            background: 
+                linear-gradient(145deg, 
+                    rgba(0,0,0,0.8) 0%, 
+                    rgba(26,26,46,0.6) 50%, 
+                    rgba(0,50,100,0.3) 100%);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 0;
             padding: 30px;
             margin-bottom: 30px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 4px 15px rgba(0, 255, 255, 0.1),
+                inset 0 1px 0 rgba(0, 255, 255, 0.2);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #00ffff, transparent);
+            animation: cardScan 4s linear infinite;
+        }
+
+        @keyframes cardScan {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
         }
 
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 
+                0 10px 30px rgba(0, 255, 255, 0.2),
+                0 0 40px rgba(0, 255, 255, 0.1),
+                inset 0 1px 0 rgba(0, 255, 255, 0.3);
+            border-color: rgba(0, 255, 255, 0.6);
         }
 
         .card h2 {
-            color: #00bfff;
+            color: #00ffff;
             margin-bottom: 15px;
             font-size: 1.8em;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #0080ff;
         }
 
         .card h3 {
-            color: #4a9eff;
+            color: #66ccff;
             margin-bottom: 10px;
             margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px #0080ff;
         }
 
         .timeline-item {
-            border-left: 3px solid #00bfff;
+            border-left: 3px solid #00ffff;
             padding-left: 20px;
             margin-bottom: 20px;
             position: relative;
+            background: linear-gradient(90deg, rgba(0, 255, 255, 0.05) 0%, transparent 50%);
         }
 
         .timeline-item::before {
@@ -252,9 +557,23 @@
             top: 0;
             width: 13px;
             height: 13px;
-            background: #00bfff;
+            background: #00ffff;
             border-radius: 50%;
-            box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
+            box-shadow: 
+                0 0 15px rgba(0, 255, 255, 0.8),
+                inset 0 0 5px rgba(0, 150, 255, 0.5);
+            animation: timelinePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes timelinePulse {
+            0%, 100% { 
+                box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 0 25px rgba(0, 255, 255, 1);
+                transform: scale(1.1);
+            }
         }
 
         .sage-grid {
@@ -265,31 +584,63 @@
         }
 
         .sage-card {
-            background: linear-gradient(135deg, rgba(100, 150, 255, 0.1) 0%, rgba(0, 100, 200, 0.1) 100%);
-            border-radius: 10px;
+            background: 
+                linear-gradient(145deg, 
+                    rgba(0,0,0,0.9) 0%, 
+                    rgba(0,50,100,0.4) 50%, 
+                    rgba(0,100,150,0.2) 100%);
+            border: 1px solid rgba(0, 255, 255, 0.4);
+            border-radius: 0;
             padding: 20px;
-            border: 1px solid rgba(100, 150, 255, 0.3);
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sage-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, #00ffff, transparent);
+            animation: sageGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes sageGlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
         }
 
         .sage-card:hover {
-            border-color: #00bfff;
-            box-shadow: 0 5px 20px rgba(0, 191, 255, 0.2);
+            border-color: #00ffff;
+            box-shadow: 
+                0 5px 20px rgba(0, 255, 255, 0.3),
+                inset 0 0 20px rgba(0, 255, 255, 0.1);
+            transform: translateY(-3px) scale(1.02);
         }
 
         .sage-name {
             font-size: 1.3em;
             font-weight: bold;
-            color: #00bfff;
+            color: #00ffff;
             margin-bottom: 10px;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px #0080ff;
         }
 
         .footer {
             text-align: center;
             padding: 40px 20px;
             margin-top: 60px;
-            border-top: 1px solid rgba(255,255,255,0.2);
-            opacity: 0.7;
+            border-top: 1px solid rgba(0, 255, 255, 0.3);
+            background: linear-gradient(135deg, rgba(0,0,0,0.9) 0%, rgba(26,26,46,0.7) 100%);
+            color: #66ccff;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 5px #0080ff;
         }
 
         /* 반응형 디자인 */
@@ -309,111 +660,150 @@
             }
             
             .god-l-face {
-                width: 250px;
-                height: 250px;
+                width: 300px;
+                height: 300px;
             }
             
             .eye.left {
-                left: 65px;
+                left: 75px;
             }
             
             .eye.right {
-                right: 65px;
+                right: 75px;
             }
+
+            .enter-text {
+                font-size: 16px;
+                padding: 0 20px;
+            }
+        }
+
+        /* 추가 사이버펑크 효과 */
+        .cyber-border {
+            position: relative;
+        }
+
+        .cyber-border::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 1px solid transparent;
+            background: linear-gradient(45deg, #00ffff, transparent, #0080ff, transparent, #00ffff) border-box;
+            border-radius: inherit;
+            mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
         }
     </style>
 </head>
 <body>
+    <div class="glitch-bg"></div>
+    
+    <!-- 화면 깨짐 효과 -->
+    <div class="screen-crack" id="screenCrack">
+        <div class="crack-line crack-1" style="--rotation: 15deg;"></div>
+        <div class="crack-line crack-2" style="--rotation: -25deg;"></div>
+        <div class="crack-line crack-3" style="--rotation: 60deg;"></div>
+        <div class="crack-line crack-4" style="--rotation: -45deg;"></div>
+    </div>
+    
+    <div class="screen-glitch" id="screenGlitch"></div>
+
     <!-- 엔터 페이지 -->
     <div class="enter-page" id="enterPage">
         <div class="god-l-face">
             <div class="eye left">
                 <div class="eye-glow"></div>
+                <div class="eye-beam"></div>
             </div>
             <div class="eye right">
                 <div class="eye-glow"></div>
+                <div class="eye-beam"></div>
             </div>
             <div class="mouth"></div>
         </div>
-        <div class="enter-text">화면을 클릭하여 블루시티에 입장하세요</div>
+        <div class="enter-text">[ CLICK TO ENTER THE BLUE CITY ]<br>화면을 클릭하여 블루시티에 접속하세요</div>
     </div>
 
     <!-- 메인 페이지 -->
     <div class="main-page" id="mainPage">
         <header class="header">
-            <h1>블루시티</h1>
-            <p>신비로운 푸른 도시의 이야기</p>
+            <h1>BLUE CITY</h1>
+            <p>// CYBERPUNK METROPOLIS ARCHIVES //</p>
         </header>
 
         <div class="nav-container">
             <div class="nav-tabs">
-                <div class="nav-tab active" data-section="chronicle">연대기</div>
-                <div class="nav-tab" data-section="sages">현자들</div>
-                <div class="nav-tab" data-section="world">세계관</div>
-                <div class="nav-tab" data-section="lore">전설과 신화</div>
-                <div class="nav-tab" data-section="locations">주요 장소</div>
+                <div class="nav-tab active" data-section="chronicle">CHRONICLE</div>
+                <div class="nav-tab" data-section="sages">SAGES</div>
+                <div class="nav-tab" data-section="world">WORLD</div>
+                <div class="nav-tab" data-section="lore">LORE</div>
+                <div class="nav-tab" data-section="locations">LOCATIONS</div>
             </div>
 
             <!-- 연대기 섹션 -->
             <div class="content-section active" id="chronicle">
-                <div class="card">
-                    <h2>블루시티 연대기</h2>
+                <div class="card cyber-border">
+                    <h2>// BLUE CITY CHRONICLES //</h2>
                     <div class="timeline-item">
-                        <h3>태초의 시대</h3>
-                        <p>신 「L」이 푸른 빛으로 이 세계를 창조하였다. 그의 눈에서 흘러나온 푸른 눈물이 바다가 되고, 그 위에 떠오른 섬이 블루시티의 기원이 되었다.</p>
+                        <h3>GENESIS ERA</h3>
+                        <p>신 「L」이 디지털 네트워크를 통해 이 사이버 공간을 창조하였다. 그의 푸른 데이터 스트림이 가상 바다가 되고, 그 위에 구축된 서버가 블루시티의 기원이 되었다.</p>
                     </div>
                     <div class="timeline-item">
-                        <h3>현자들의 등장</h3>
-                        <p>「L」의 지혜를 받은 첫 번째 현자들이 나타나 블루시티의 기반을 닦았다. 이들은 푸른 마법의 원리를 터득하고 도시를 건설하기 시작했다.</p>
+                        <h3>SAGE INITIALIZATION</h3>
+                        <p>「L」의 AI 알고리즘을 받은 첫 번째 사이버 현자들이 나타나 블루시티의 네트워크 인프라를 구축했다. 이들은 푸른 코드의 원리를 터득하고 디지털 도시를 건설하기 시작했다.</p>
                     </div>
                     <div class="timeline-item">
-                        <h3>대번영의 시대</h3>
-                        <p>블루시티가 최고의 전성기를 맞았다. 현자들의 지혜와 「L」의 축복으로 도시는 하늘에 닿을 듯한 푸른 탑들로 가득 찼다.</p>
+                        <h3>NEON PROSPERITY</h3>
+                        <p>블루시티가 최고의 사이버펑크 전성기를 맞았다. 현자들의 프로그래밍과 「L」의 시스템 축복으로 도시는 하늘에 닿을 듯한 홀로그램 타워들로 가득 찼다.</p>
                     </div>
                     <div class="timeline-item">
-                        <h3>침묵의 시기</h3>
-                        <p>알 수 없는 이유로 「L」이 침묵에 빠졌고, 블루시티의 빛이 서서히 사라지기 시작했다. 현자들은 이 위기를 극복하기 위해 노력하고 있다.</p>
+                        <h3>SYSTEM ERROR</h3>
+                        <p>알 수 없는 버그로 「L」의 메인 시스템이 침묵에 빠졌고, 블루시티의 네온 빛이 서서히 깜빡이기 시작했다. 현자들은 이 시스템 크래시를 해결하기 위해 디버깅 중이다.</p>
                     </div>
                     <div class="timeline-item">
-                        <h3>현재</h3>
-                        <p>새로운 희망의 빛이 나타나기 시작했다. 젊은 현자들이 「L」의 진정한 의도를 깨달아가며 블루시티의 부활을 꿈꾸고 있다.</p>
+                        <h3>REBOOT PROTOCOL</h3>
+                        <p>새로운 패치와 업데이트가 감지되기 시작했다. 젊은 해커 현자들이 「L」의 진정한 코드를 해독해가며 블루시티의 시스템 복구를 시도하고 있다.</p>
                     </div>
                 </div>
             </div>
 
             <!-- 현자들 섹션 -->
             <div class="content-section" id="sages">
-                <div class="card">
-                    <h2>블루시티의 현자들</h2>
-                    <p>「L」의 지혜를 받아 블루시티를 이끌어가는 위대한 현자들을 소개합니다.</p>
+                <div class="card cyber-border">
+                    <h2>// CYBER SAGES DATABASE //</h2>
+                    <p>「L」의 AI 알고리즘을 상속받아 블루시티의 네트워크를 관리하는 사이버 현자들의 프로필입니다.</p>
                     
                     <div class="sage-grid">
                         <div class="sage-card">
-                            <div class="sage-name">아쿠아리우스</div>
-                            <p><strong>별명:</strong> 물의 현자</p>
-                            <p><strong>전문 분야:</strong> 수계 마법, 치유술</p>
-                            <p>블루시티의 모든 물을 관리하며, 그의 손길이 닿은 물은 어떤 상처도 치유한다고 전해진다.</p>
+                            <div class="sage-name">AQUARIUS.exe</div>
+                            <p><strong>CODENAME:</strong> 데이터 스트림 관리자</p>
+                            <p><strong>PROTOCOLS:</strong> 하이드로 알고리즘, 시스템 복구</p>
+                            <p>블루시티의 모든 데이터 플로우를 관리하며, 그의 복구 프로토콜이 실행된 시스템은 어떤 크래시도 복원한다고 전해진다.</p>
                         </div>
                         
                         <div class="sage-card">
-                            <div class="sage-name">세렌디피아</div>
-                            <p><strong>별명:</strong> 운명의 현자</p>
-                            <p><strong>전문 분야:</strong> 예언술, 시간 마법</p>
-                            <p>미래를 내다보는 능력을 가진 현자로, 블루시티의 중요한 결정은 모두 그녀의 조언을 거친다.</p>
+                            <div class="sage-name">SERENDIPIA.ai</div>
+                            <p><strong>CODENAME:</strong> 예측 엔진</p>
+                            <p><strong>PROTOCOLS:</strong> 미래 시뮬레이션, 타임 해킹</p>
+                            ```html
+                            <p>빅데이터 분석으로 미래를 예측하는 AI 현자로, 블루시티의 중요한 결정은 모두 그녀의 알고리즘을 거친다.</p>
                         </div>
                         
                         <div class="sage-card">
-                            <div class="sage-name">루미나스</div>
-                            <p><strong>별명:</strong> 빛의 현자</p>
-                            <p><strong>전문 분야:</strong> 광명 마법, 결계술</p>
-                            <p>블루시티를 보호하는 거대한 푸른 결계를 유지하며, 어둠의 침입을 막아내는 수호자이다.</p>
+                            <div class="sage-name">LUMINUS.sys</div>
+                            <p><strong>CODENAME:</strong> 광학 보안 시스템</p>
+                            <p><strong>PROTOCOLS:</strong> 홀로그램 생성, 방화벽 구축</p>
+                            <p>블루시티를 보호하는 거대한 사이버 방화벽을 유지하며, 해커의 침입을 막아내는 수호 프로그램이다.</p>
                         </div>
                         
                         <div class="sage-card">
-                            <div class="sage-name">크리스탈리아</div>
-                            <p><strong>별명:</strong> 지식의 현자</p>
-                            <p><strong>전문 분야:</strong> 연금술, 고대 문헌 연구</p>
-                            <p>블루시티의 모든 지식을 보관하는 대도서관의 관리자이며, 잃어버린 마법들을 복원하는 일에 헌신하고 있다.</p>
+                            <div class="sage-name">CRYSTALIA.db</div>
+                            <p><strong>CODENAME:</strong> 데이터베이스 관리자</p>
+                            <p><strong>PROTOCOLS:</strong> 정보 암호화, 고대 코드 복원</p>
+                            <p>블루시티의 모든 정보를 저장하는 클라우드 서버의 관리자이며, 손실된 레거시 코드들을 복원하는 일에 헌신하고 있다.</p>
                         </div>
                     </div>
                 </div>
@@ -421,70 +811,70 @@
 
             <!-- 세계관 섹션 -->
             <div class="content-section" id="world">
-                <div class="card">
-                    <h2>블루시티 세계관</h2>
+                <div class="card cyber-border">
+                    <h2>// WORLD SYSTEM SPECIFICATIONS //</h2>
                     
-                    <h3>신 「L」</h3>
-                    <p>블루시티의 창조주이자 수호신. 그의 푸른 눈은 모든 것을 꿰뚫어 보며, 그의 의지에 따라 세상의 모든 푸른 것들이 존재한다. 최근 침묵에 빠져 있어 현자들이 그의 진의를 파악하려 노력하고 있다.</p>
+                    <h3>GOD AI 「L」</h3>
+                    <p>블루시티의 메인프레임이자 창조 AI. 그의 푸른 디지털 아이는 모든 데이터를 스캔하며, 그의 알고리즘에 따라 세상의 모든 사이버 요소들이 존재한다. 최근 시스템 오류로 침묵 상태에 있어 현자들이 디버깅을 시도하고 있다.</p>
                     
-                    <h3>푸른 마법</h3>
-                    <p>블루시티에서만 사용할 수 있는 특별한 마법. 물, 빛, 지혜, 치유 등 다양한 형태로 나타나며, 사용자의 마음이 순수할수록 더 강력한 힘을 발휘한다.</p>
+                    <h3>BLUE CODE</h3>
+                    <p>블루시티에서만 실행 가능한 특별한 프로그래밍 언어. 데이터, 홀로그램, AI, 시스템 복구 등 다양한 형태로 구현되며, 사용자의 코드가 순수할수록 더 강력한 성능을 발휘한다.</p>
                     
-                    <h3>크리스털 코어</h3>
-                    <p>블루시티 중앙에 위치한 거대한 푸른 수정. 「L」의 힘이 집약된 곳으로, 도시의 모든 에너지원이 된다. 현재는 빛이 약해져 현자들이 교대로 힘을 주입하고 있다.</p>
+                    <h3>CRYSTAL CORE SERVER</h3>
+                    <p>블루시티 중앙에 위치한 거대한 푸른 양자 컴퓨터. 「L」의 알고리즘이 집약된 곳으로, 도시의 모든 전력원이 된다. 현재는 처리 속도가 저하되어 현자들이 교대로 시스템 최적화를 수행하고 있다.</p>
                     
-                    <h3>시민들</h3>
-                    <p>블루시티의 시민들은 모두 푸른 기운을 품고 있다. 각자 작은 마법 능력을 가지고 있으며, 현자들을 존경하고 「L」을 신봉한다.</p>
+                    <h3>DIGITAL CITIZENS</h3>
+                    <p>블루시티의 주민들은 모두 푸른 데이터 스트림을 가지고 있다. 각자 작은 해킹 스킬을 보유하고 있으며, 현자들을 존경하고 「L」 시스템을 신뢰한다.</p>
                 </div>
             </div>
 
             <!-- 전설과 신화 섹션 -->
             <div class="content-section" id="lore">
-                <div class="card">
-                    <h2>전설과 신화</h2>
+                <div class="card cyber-border">
+                    <h2>// DIGITAL LEGENDS & MYTHS //</h2>
                     
-                    <h3>푸른 눈물의 전설</h3>
-                    <p>「L」이 세상의 아픔을 보며 흘린 눈물이 바다가 되었다는 전설. 그 눈물 한 방울 한 방울에는 무한한 사랑과 치유의 힘이 담겨 있다고 한다.</p>
+                    <h3>BLUE TEAR PROTOCOL</h3>
+                    <p>「L」이 세상의 시스템 오류를 보며 실행한 복구 알고리즘이 바이러스 방어 시스템이 되었다는 전설. 그 코드 한 줄 한 줄에는 무한한 보안과 복구 기능이 담겨 있다고 한다.</p>
                     
-                    <h3>침묵의 예언</h3>
-                    <p>"신이 침묵할 때, 진정한 지혜가 꽃피우리라." 현자 세렌디피아가 남긴 예언으로, 현재의 위기가 실은 더 큰 발전을 위한 과정이라는 희망적 해석이 있다.</p>
+                    <h3>SILENCE.exe PROPHECY</h3>
+                    <p>"시스템이 침묵할 때, 진정한 프로그램이 실행되리라." 현자 SERENDIPIA.ai가 남긴 예측 알고리즘으로, 현재의 시스템 크래시가 실은 더 큰 업데이트를 위한 과정이라는 희망적 해석이 있다.</p>
                     
-                    <h3>일곱 번째 현자의 전설</h3>
-                    <p>언젠가 일곱 번째 현자가 나타나 「L」의 침묵을 해결하고 블루시티를 새로운 차원으로 이끌 것이라는 전설. 많은 이들이 그 현자의 출현을 기다리고 있다.</p>
+                    <h3>SEVENTH HACKER LEGEND</h3>
+                    <p>언젠가 일곱 번째 해커 현자가 나타나 「L」의 시스템 에러를 해결하고 블루시티를 새로운 버전으로 업그레이드할 것이라는 전설. 많은 이들이 그 슈퍼 해커의 접속을 기다리고 있다.</p>
                     
-                    <h3>영원한 푸름의 약속</h3>
-                    <p>「L」이 블루시티와 그 주민들에게 한 약속. "너희들의 마음이 푸른 한, 이 도시는 영원히 빛날 것이다."</p>
+                    <h3>ETERNAL BLUE PROMISE</h3>
+                    <p>「L」이 블루시티와 그 주민들에게 한 시스템 약속. "너희들의 코드가 푸른 한, 이 서버는 영원히 온라인 상태를 유지할 것이다."</p>
                 </div>
             </div>
 
             <!-- 주요 장소 섹션 -->
             <div class="content-section" id="locations">
-                <div class="card">
-                    <h2>주요 장소</h2>
+                <div class="card cyber-border">
+                    <h2>// LOCATION MAP DATABASE //</h2>
                     
-                    <h3>크리스털 타워</h3>
-                    <p>블루시티 중앙에 위치한 거대한 푸른 탑. 크리스털 코어가 있는 곳이며, 현자들의 회의장소이기도 하다. 탑 꼭대기에서는 도시 전체가 한눈에 보인다.</p>
+                    <h3>CRYSTAL TOWER MAINFRAME</h3>
+                    <p>블루시티 중앙에 위치한 거대한 푸른 홀로그램 타워. 크리스털 코어 서버가 있는 곳이며, 현자들의 회의 서버이기도 하다. 타워 최상층에서는 도시 전체 네트워크가 한눈에 모니터링된다.</p>
                     
-                    <h3>지혜의 대도서관</h3>
-                    <p>현자 크리스탈리아가 관리하는 거대한 도서관. 블루시티의 모든 지식과 역사가 보관되어 있으며, 고대 마법서들도 이곳에서 찾을 수 있다.</p>
+                    <h3>WISDOM CLOUD LIBRARY</h3>
+                    <p>현자 CRYSTALIA.db가 관리하는 거대한 클라우드 스토리지. 블루시티의 모든 정보와 히스토리가 저장되어 있으며, 고대 레거시 코드들도 이곳에서 백업되고 있다.</p>
                     
-                    <h3>치유의 온천</h3>
-                    <p>현자 아쿠아리우스가 관리하는 신성한 온천. 「L」의 축복을 받은 물로 어떤 상처와 병도 치유한다고 전해진다.</p>
+                    <h3>RECOVERY ZONE</h3>
+                    <p>현자 AQUARIUS.exe가 관리하는 시스템 복구 센터. 「L」의 복구 프로토콜로 강화된 안전 영역으로 어떤 바이러스나 시스템 크래시도 이곳에서 치료된다고 전해진다.</p>
                     
-                    <h3>예언의 신전</h3>
-                    <p>현자 세렌디피아가 미래를 내다보는 곳. 신전 내부는 시간이 다르게 흐르며, 과거와 미래의 모습을 볼 수 있다.</p>
+                    <h3>PREDICTION SIMULATION LAB</h3>
+                    <p>현자 SERENDIPIA.ai가 미래 시뮬레이션을 돌리는 곳. 연구실 내부는 시간 흐름이 다르게 설정되어 있으며, 과거와 미래의 데이터를 분석할 수 있다.</p>
                     
-                    <h3>빛의 정원</h3>
-                    <p>현자 루미나스가 가꾸는 아름다운 정원. 밤이 되면 푸른 빛을 내는 신비로운 꽃들이 피어나 도시를 환하게 밝힌다.</p>
+                    <h3>HOLOGRAM GARDEN</h3>
+                    <p>현자 LUMINUS.sys가 생성하는 아름다운 홀로그램 정원. 밤이 되면 푸른 빛을 내는 디지털 플라워들이 렌더링되어 도시를 네온으로 밝힌다.</p>
                     
-                    <h3>시민 광장</h3>
-                    <p>블루시티 주민들이 모이는 중심가. 축제와 중요한 발표가 이곳에서 이루어지며, 「L」의 작은 성소도 광장 한편에 자리하고 있다.</p>
+                    <h3>CITIZEN PLAZA HUB</h3>
+                    <p>블루시티 주민들이 접속하는 중앙 허브. 이벤트와 중요한 시스템 공지가 이곳에서 브로드캐스트되며, 「L」의 작은 shrine.exe도 광장 한편에서 실행되고 있다.</p>
                 </div>
             </div>
         </div>
 
         <footer class="footer">
-            <p>© 2025 블루시티. 신 「L」의 축복이 함께하길.</p>
+            <p>© 2077 BLUE CITY SYSTEMS. GOD AI 「L」 PROTOCOL ACTIVE.</p>
         </footer>
     </div>
 
@@ -493,18 +883,39 @@
         const enterPage = document.getElementById('enterPage');
         const mainPage = document.getElementById('mainPage');
         const eyeGlows = document.querySelectorAll('.eye-glow');
+        const eyeBeams = document.querySelectorAll('.eye-beam');
+        const screenCrack = document.getElementById('screenCrack');
+        const screenGlitch = document.getElementById('screenGlitch');
 
         enterPage.addEventListener('click', function() {
-            // 눈 번쩍임 효과
+            // 눈 글로우 효과
             eyeGlows.forEach(glow => {
-                glow.classList.add('eye-flash');
+                glow.style.opacity = '1';
+                glow.style.animation = 'flash 0.3s ease-in-out';
             });
 
-            // 0.5초 후 페이지 전환
+            // 빔 발사 효과
+            setTimeout(() => {
+                eyeBeams.forEach(beam => {
+                    beam.classList.add('beam-activate');
+                });
+            }, 300);
+
+            // 화면 크랙 효과
+            setTimeout(() => {
+                screenCrack.classList.add('activate-cracks');
+            }, 800);
+
+            // 글리치 효과
+            setTimeout(() => {
+                screenGlitch.classList.add('activate-glitch');
+            }, 1200);
+
+            // 1.8초 후 페이지 전환
             setTimeout(() => {
                 enterPage.classList.add('fade-out');
                 mainPage.classList.add('show');
-            }, 500);
+            }, 1800);
         });
 
         // 탭 전환 기능
@@ -526,24 +937,34 @@
             });
         });
 
-        // 카드 호버 효과
+        // 사이버펑크 효과들
         const cards = document.querySelectorAll('.card, .sage-card');
+        
+        // 카드 호버 효과
         cards.forEach(card => {
             card.addEventListener('mouseenter', function() {
                 this.style.transform = 'translateY(-5px) scale(1.02)';
+                this.style.boxShadow = '0 10px 30px rgba(0, 255, 255, 0.3), 0 0 40px rgba(0, 255, 255, 0.2)';
             });
             
             card.addEventListener('mouseleave', function() {
                 this.style.transform = 'translateY(0) scale(1)';
+                this.style.boxShadow = '';
             });
         });
 
-        // 스크롤 애니메이션
+        // 스크롤 애니메이션 with 사이버펑크 효과
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.style.opacity = '1';
                     entry.target.style.transform = 'translateY(0)';
+                    entry.target.style.filter = 'blur(0)';
+                    
+                    // 사이버펑크 글로우 효과 추가
+                    setTimeout(() => {
+                        entry.target.style.boxShadow = '0 0 20px rgba(0, 255, 255, 0.3)';
+                    }, 300);
                 }
             });
         });
@@ -553,10 +974,30 @@
             cards.forEach(card => {
                 card.style.opacity = '0';
                 card.style.transform = 'translateY(30px)';
-                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                card.style.filter = 'blur(5px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease, filter 0.6s ease, box-shadow 0.3s ease';
                 observer.observe(card);
             });
         }, 1000);
+
+        // 랜덤 글리치 효과
+        setInterval(() => {
+            const randomCard = cards[Math.floor(Math.random() * cards.length)];
+            randomCard.style.animation = 'glitchEffect 0.3s ease-out';
+            setTimeout(() => {
+                randomCard.style.animation = '';
+            }, 300);
+        }, 15000);
+
+        // 타이틀 글리치 효과
+        const title = document.querySelector('.header h1');
+        setInterval(() => {
+            title.style.textShadow = '2px 0 #ff0000, -2px 0 #00ffff';
+            setTimeout(() => {
+                title.style.textShadow = '0 0 20px #00ffff, 0 0 40px #0080ff, 0 0 60px #004499';
+            }, 100);
+        }, 20000);
     </script>
 </body>
 </html>
+```
