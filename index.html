@@ -18,6 +18,8 @@
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
+            margin: 0;
+            padding: 0;
         }
 
         .stars {
@@ -80,6 +82,7 @@
         .title {
             font-size: 3rem;
             margin-bottom: 10px;
+            margin-top: 20px;
             background: linear-gradient(45deg, #ffb3d9, #ff69b4, #ffc0cb, #ffb3d9);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -165,7 +168,10 @@
         .card-back {
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #2d1b2e 0%, #4a2c54 50%, #2d1b2e 100%);
+            background-image: url('card-back.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -174,55 +180,22 @@
         }
 
         .card-back::before {
-            content: '🌙';
-            font-size: 3rem;
-            animation: pulse 2s infinite;
-            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+            content: '';
+            /* 이모지 제거하고 배경 이미지 사용 */
         }
 
         .card-front {
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #fff0f5 0%, #f8e8f0 50%, #fdf2f8 100%);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 15px;
-            text-align: center;
-            color: #4a2c54;
             border-radius: 12px;
-            border: 2px solid #ff69b4;
         }
 
         .card-front.active {
-            display: flex;
-        }
-
-        .card-front .card-name {
-            font-size: 1rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #8b4cb8;
-            text-shadow: 0 1px 2px rgba(255, 105, 180, 0.3);
-        }
-
-        .card-front .card-meaning {
-            font-size: 0.7rem;
-            line-height: 1.2;
-            color: #4a2c54;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-        }
-
-        .card-front .card-symbol {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            opacity: 0.8;
-            filter: drop-shadow(0 2px 4px rgba(255, 105, 180, 0.3));
+            display: block;
         }
 
         @keyframes pulse {
@@ -405,30 +378,30 @@
     </div>
 
     <script>
-        // 타로 카드 데이터 (심볼 추가)
+        // 타로 카드 데이터 (이미지 파일명 추가)
         const tarotCards = [
-            { name: "바보", meaning: "새로운 시작, 순수함, 모험", symbol: "🃏" },
-            { name: "마법사", meaning: "의지력, 창조력, 실현", symbol: "🎭" },
-            { name: "여교황", meaning: "직감, 신비, 내면의 지혜", symbol: "🌙" },
-            { name: "여황제", meaning: "풍요, 사랑, 모성", symbol: "👑" },
-            { name: "황제", meaning: "권위, 안정, 리더십", symbol: "⚔️" },
-            { name: "교황", meaning: "전통, 영성, 가르침", symbol: "🏛️" },
-            { name: "연인", meaning: "사랑, 선택, 조화", symbol: "💕" },
-            { name: "전차", meaning: "승리, 의지, 통제", symbol: "🏆" },
-            { name: "힘", meaning: "내적 힘, 용기, 인내", symbol: "💪" },
-            { name: "은둔자", meaning: "성찰, 내면 탐구, 지혜", symbol: "🕯️" },
-            { name: "운명의 수레바퀴", meaning: "변화, 운명, 순환", symbol: "🎡" },
-            { name: "정의", meaning: "균형, 공정, 진실", symbol: "⚖️" },
-            { name: "매달린 사람", meaning: "희생, 새로운 관점, 기다림", symbol: "🔄" },
-            { name: "죽음", meaning: "변화, 끝과 시작, 변환", symbol: "🦋" },
-            { name: "절제", meaning: "균형, 조화, 중용", symbol: "🌊" },
-            { name: "악마", meaning: "유혹, 속박, 물질적 욕망", symbol: "😈" },
-            { name: "탑", meaning: "파괴, 깨달음, 급작스러운 변화", symbol: "⚡" },
-            { name: "별", meaning: "희망, 영감, 치유", symbol: "⭐" },
-            { name: "달", meaning: "환상, 불안, 무의식", symbol: "🌙" },
-            { name: "태양", meaning: "성공, 기쁨, 활력", symbol: "☀️" },
-            { name: "심판", meaning: "부활, 각성, 새로운 출발", symbol: "📯" },
-            { name: "세계", meaning: "완성, 성취, 통합", symbol: "🌍" }
+            { name: "바보", meaning: "새로운 시작, 순수함, 모험", symbol: "🃏", image: "fool.jpg" },
+            { name: "마법사", meaning: "의지력, 창조력, 실현", symbol: "🎭", image: "magician.jpg" },
+            { name: "여교황", meaning: "직감, 신비, 내면의 지혜", symbol: "🌙", image: "high-priestess.jpg" },
+            { name: "여황제", meaning: "풍요, 사랑, 모성", symbol: "👑", image: "empress.jpg" },
+            { name: "황제", meaning: "권위, 안정, 리더십", symbol: "⚔️", image: "emperor.jpg" },
+            { name: "교황", meaning: "전통, 영성, 가르침", symbol: "🏛️", image: "hierophant.jpg" },
+            { name: "연인", meaning: "사랑, 선택, 조화", symbol: "💕", image: "lovers.jpg" },
+            { name: "전차", meaning: "승리, 의지, 통제", symbol: "🏆", image: "chariot.jpg" },
+            { name: "힘", meaning: "내적 힘, 용기, 인내", symbol: "💪", image: "strength.jpg" },
+            { name: "은둔자", meaning: "성찰, 내면 탐구, 지혜", symbol: "🕯️", image: "hermit.jpg" },
+            { name: "운명의 수레바퀴", meaning: "변화, 운명, 순환", symbol: "🎡", image: "wheel-of-fortune.jpg" },
+            { name: "정의", meaning: "균형, 공정, 진실", symbol: "⚖️", image: "justice.jpg" },
+            { name: "매달린 사람", meaning: "희생, 새로운 관점, 기다림", symbol: "🔄", image: "hanged-man.jpg" },
+            { name: "죽음", meaning: "변화, 끝과 시작, 변환", symbol: "🦋", image: "death.jpg" },
+            { name: "절제", meaning: "균형, 조화, 중용", symbol: "🌊", image: "temperance.jpg" },
+            { name: "악마", meaning: "유혹, 속박, 물질적 욕망", symbol: "😈", image: "devil.jpg" },
+            { name: "탑", meaning: "파괴, 깨달음, 급작스러운 변화", symbol: "⚡", image: "tower.jpg" },
+            { name: "별", meaning: "희망, 영감, 치유", symbol: "⭐", image: "star.jpg" },
+            { name: "달", meaning: "환상, 불안, 무의식", symbol: "🌙", image: "moon.jpg" },
+            { name: "태양", meaning: "성공, 기쁨, 활력", symbol: "☀️", image: "sun.jpg" },
+            { name: "심판", meaning: "부활, 각성, 새로운 출발", symbol: "📯", image: "judgement.jpg" },
+            { name: "세계", meaning: "완성, 성취, 통합", symbol: "🌍", image: "world.jpg" }
         ];
 
         let currentSpread = 1;
@@ -459,11 +432,7 @@
                 card.className = 'tarot-card';
                 card.innerHTML = `
                     <div class="card-back"></div>
-                    <div class="card-front">
-                        <div class="card-symbol">🔮</div>
-                        <div class="card-name">???</div>
-                        <div class="card-meaning">카드를 선택하세요</div>
-                    </div>
+                    <div class="card-front"></div>
                 `;
                 card.onclick = () => selectCard(i, card);
                 deck.appendChild(card);
