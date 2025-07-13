@@ -179,9 +179,9 @@
             border-radius: 12px;
         }
 
-        .card-back::before {
-            content: '';
-            /* 이모지 제거하고 배경 이미지 사용 */
+        .card-back {
+            background-image: url('file_00000000975861f8ae5cac297feb4774.png');
+            ...
         }
 
         .card-front {
@@ -488,9 +488,7 @@
             backFace.style.display = 'none';
             frontFace.classList.add('active');
             frontFace.innerHTML = `
-                <div class="card-symbol">${randomCard.symbol}</div>
-                <div class="card-name">${randomCard.name}</div>
-                <div class="card-meaning">${randomCard.meaning}</div>
+            <img src="${randomCard.image}" alt="${randomCard.name}" style="width:100%; height:100%; object-fit:cover; border-radius:12px;">
             `;
             
             // 선택된 카드를 availableCards에서 제거
