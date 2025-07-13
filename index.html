@@ -168,7 +168,7 @@
         .card-back {
             width: 100%;
             height: 100%;
-            background-image: url('card-back.jpg');
+            background-image: url('file_00000000975861f8ae5cac297feb4774.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -177,11 +177,6 @@
             align-items: center;
             position: relative;
             border-radius: 12px;
-        }
-
-        .card-back {
-            background-image: url('file_00000000975861f8ae5cac297feb4774.png');
-            ...
         }
 
         .card-front {
@@ -206,27 +201,29 @@
         .selected-cards {
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: 40px;
             flex-wrap: wrap;
             margin-top: 40px;
         }
 
-        .selected-card {
-            width: 140px;
-            height: 240px;
-            background: linear-gradient(135deg, #fff0f5 0%, #f8e8f0 100%);
-            border-radius: 15px;
-            border: 3px solid #ff69b4;
-            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.4);
+        .selected-card-container {
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            color: #4a2c54;
-            text-align: center;
-            padding: 20px;
-            position: relative;
+            margin: 20px;
+        }
+
+        .selected-card {
+            width: 200px;
+            height: 330px;
+            border-radius: 20px;
+            border: 4px solid #ff69b4;
+            box-shadow: 0 15px 40px rgba(255, 105, 180, 0.5);
             overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
         }
 
         .selected-card::before {
@@ -236,27 +233,29 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(45deg, rgba(255, 105, 180, 0.1), rgba(218, 112, 214, 0.1));
+            background: linear-gradient(135deg, rgba(255, 105, 180, 0.1), rgba(218, 112, 214, 0.1));
             z-index: 1;
         }
 
-        .selected-card > * {
-            position: relative;
-            z-index: 2;
+        .card-info {
+            margin-top: 15px;
+            text-align: center;
+            max-width: 200px;
         }
 
         .card-name {
-            font-size: 1.1rem;
+            font-size: 1.3rem;
             font-weight: bold;
-            margin-bottom: 10px;
-            color: #8b4cb8;
-            text-shadow: 0 1px 2px rgba(255, 105, 180, 0.3);
+            color: #ffb3d9;
+            text-shadow: 0 2px 4px rgba(255, 179, 217, 0.5);
+            margin-bottom: 8px;
         }
 
         .card-meaning {
-            font-size: 0.9rem;
+            font-size: 1rem;
             line-height: 1.4;
-            color: #4a2c54;
+            color: #ffc0cb;
+            text-shadow: 0 1px 2px rgba(255, 192, 203, 0.3);
         }
 
         .reading-result {
@@ -324,9 +323,24 @@
             }
             
             .selected-card {
-                width: 120px;
-                height: 200px;
-                padding: 15px;
+                width: 200px;
+                height: 330px;
+            }
+            
+            .card-info {
+                max-width: 160px;
+            }
+            
+            .card-name {
+                font-size: 1.1rem;
+            }
+            
+            .card-meaning {
+                font-size: 0.9rem;
+            }
+
+            .selected-cards {
+                gap: 30px;
             }
 
             .header-image.desktop {
@@ -352,7 +366,7 @@
             <img src="무제94_20250712135058.png" alt="Nmare & 샤비 모바일 헤더" class="header-image mobile" id="headerImageMobile">
             
             <h1 class="title">🌙 Nmare & 샤비의   타로 리딩 ✨️</h1>
-            <p class="subtitle">✦오늘의 운세가 궁금해? 어서 타로를 뽑아봐~⊹.˚✦</p>
+            <p class="subtitle">✦오늘의 운세가 궁금해? 어서 카드를 뽑아봐~⊹.˚✦</p>
         </div>
 
         <div class="spread-selector">
@@ -375,7 +389,7 @@
 
         <div class="reading-result" id="readingResult" style="display: none;"></div>
 
-        <button class="shuffle-btn" onclick="shuffleCards()">🔄 카드 다시 섞기</button>
+        <button class="shuffle-btn" onclick="shuffleCards()">✦카드 다시 섞기✦</button>
     </div>
 
     <script>
@@ -486,10 +500,8 @@
             const frontFace = cardElement.querySelector('.card-front');
             
             backFace.style.display = 'none';
+            frontFace.style.backgroundImage = `url('${randomCard.image}')`;
             frontFace.classList.add('active');
-            frontFace.innerHTML = `
-            <img src="${randomCard.image}" alt="${randomCard.name}" style="width:100%; height:100%; object-fit:cover; border-radius:12px;">
-            `;
             
             // 선택된 카드를 availableCards에서 제거
             availableCards = availableCards.filter(card => card !== randomCard);
@@ -513,13 +525,17 @@
             container.innerHTML = '';
             
             selectedCards.forEach((card, index) => {
-                const cardElement = document.createElement('div');
-                cardElement.className = 'selected-card';
-                cardElement.innerHTML = `
-                    <div class="card-name">${card.name}</div>
-                    <div class="card-meaning">${card.meaning}</div>
+                const cardContainer = document.createElement('div');
+                cardContainer.className = 'selected-card-container';
+                
+                cardContainer.innerHTML = `
+                    <div class="selected-card" style="background-image: url('${card.image}')"></div>
+                    <div class="card-info">
+                        <div class="card-name">${card.name}</div>
+                        <div class="card-meaning">${card.meaning}</div>
+                    </div>
                 `;
-                container.appendChild(cardElement);
+                container.appendChild(cardContainer);
             });
         }
 
