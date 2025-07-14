@@ -365,7 +365,7 @@
             <!-- 모바일용 헤더 이미지 -->
             <img src="무제94_20250712135058.png" alt="Nmare & 샤비 모바일 헤더" class="header-image mobile" id="headerImageMobile">
             
-            <h1 class="title">🌙 Nmare & 샤비의   타로 리딩 ✨️</h1>
+            <h1 class="title">🌙 Nmare & 샤비의   타로 타로 ✨️</h1>
             <p class="subtitle">✦오늘의 운세가 궁금해? 어서 카드를 뽑아봐~⊹.˚✦</p>
         </div>
 
@@ -479,11 +479,11 @@
         function updateInstructions() {
             const instructions = document.getElementById('instructions');
             if (selectedCards.length === 0) {
-                instructions.textContent = `마음속으로 질문을 떠올리시고 ${currentSpread}장의 카드를 선택해주세요`;
+                instructions.textContent = `마음속으로 질문을 떠올리고 ${currentSpread}장의 카드를 뽑아보세요 ⊹.˚`;
             } else if (selectedCards.length < currentSpread) {
                 instructions.textContent = `${currentSpread - selectedCards.length}장 더 선택해주세요`;
             } else {
-                instructions.textContent = '리딩이 완료되었습니다!';
+                instructions.textContent = '선택 완료! 아래에서 리딩을 확인해보세요 ⊹.˚';
             }
         }
 
@@ -555,8 +555,8 @@
         function generateOneCardReading() {
             const card = selectedCards[0];
             return {
-                title: "오늘의 메시지",
-                text: `${card.name} 카드가 나타났습니다. 이 카드는 ${card.meaning}을 상징합니다. 오늘 당신에게 필요한 것은 이 카드의 에너지를 받아들이는 것입니다. 새로운 관점으로 상황을 바라보고, 내면의 지혜를 믿으세요.`
+                title: "✦오늘의 메시지✦",
+                text: `${card.name} 카드가 나타났어요~! 이 카드는 ${card.meaning}을 상징하는 카드에요. 어쩌면 이 카드가 오늘 당신의 선택을 도와줄지도 모르겠어요! -샤비-`
             };
         }
 
@@ -564,8 +564,8 @@
         function generateThreeCardReading() {
             const [past, present, future] = selectedCards;
             return {
-                title: "과거 - 현재 - 미래",
-                text: `과거: ${past.name} - ${past.meaning}이 당신의 과거를 나타냅니다. 현재: ${present.name} - ${present.meaning}이 현재 상황을 보여줍니다. 미래: ${future.name} - ${future.meaning}이 앞으로 다가올 가능성을 암시합니다. 과거의 경험을 바탕으로 현재를 이해하고, 미래를 위한 준비를 하세요.`
+                title: "✦과거 - 현재 - 미래✦",
+                text: `✦과거: ${past.name} - 당신의 과거는 ${past.meaning}와 관련있군요. ✦현재: ${present.name} - 현재 상황은 ${present.meaning}라고 볼 수 있어요. ✦미래: ${future.name} - ${future.meaning}이 앞으로 다가올 가능성을 암시하네요. 과거를 바탕으로 현재를 바라보고, 미래를 예측하는 것이 좋을 거예요. -Nmare-`
             };
         }
 
@@ -573,8 +573,8 @@
         function generateFiveCardReading() {
             const [situation, challenge, past, future, outcome] = selectedCards;
             return {
-                title: "종합 리딩",
-                text: `현재 상황: ${situation.name} - ${situation.meaning}. 도전 과제: ${challenge.name} - ${challenge.meaning}. 과거의 영향: ${past.name} - ${past.meaning}. 미래의 가능성: ${future.name} - ${future.meaning}. 최종 결과: ${outcome.name} - ${outcome.meaning}. 모든 요소를 종합하여 균형잡힌 결정을 내리세요.`
+                title: "✦종합 리딩✦",
+                text: `✦현재 상황: ${situation.name} - ${situation.meaning}. ✦도전 과제: ${challenge.name} - ${challenge.meaning}. ✦과거의 영향: ${past.name} - ${past.meaning}. ✦미래의 가능성: ${future.name} - ${future.meaning}. ✦최종 결과: ${outcome.name} - ${outcome.meaning}. 모든 요소를 종합해서 중요한 결정을 내려보세요. -Nmare-`
             };
         }
 
